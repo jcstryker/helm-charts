@@ -1,0 +1,5 @@
+apiVersion: v2
+name: static-site
+description: A basic static site helm chart
+type: application
+version: 0.1.0

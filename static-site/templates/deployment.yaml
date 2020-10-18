@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "static-site.fullname" . }}
+  labels:
+    {{- include "static-site.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "static-site.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "static-site.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "static-site.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: webserver
+          securityContext:
+            {{- toYaml .Values.webserver.securityContext | nindent 12 }}
+          image: "{{ .Values.webserver.image.repository }}:{{ .Values.webserver.image.tag }}"
+          imagePullPolicy: {{ .Values.webserver.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.webserver.resources | nindent 12 }}
+          volumeMounts:
+            - name: shared
+              mountPath: /http
+          args:
+          {{- if .Values.webserver.args }}
+            {{- toYaml .Values.webserver.args | nindent 12 }}
+          {{ else }}
+            - caddy
+            - file-server
+            - --root
+            - /http/git-sync/public
+            - --listen
+            - :80
+          {{- end }}
+        - name: git-sync
+          securityContext:
+            {{- toYaml .Values.gitSync.securityContext | nindent 12 }}
+          image: "{{ .Values.gitSync.image.repository }}:{{ .Values.gitSync.image.tag }}"
+          imagePullPolicy: {{ .Values.gitSync.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.gitSync.resources | nindent 12 }}
+          volumeMounts:
+            - name: shared
+              mountPath: /tmp/git
+          env:
+            - name: GIT_SYNC_REPO
+              value: {{ .Values.gitSync.syncRepo }}
+            - name: GIT_SYNC_DEST
+              value: git-sync
+            {{- with .Values.gitSync.env }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+      volumes:
+        - name: shared
+          emptyDir: {}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
