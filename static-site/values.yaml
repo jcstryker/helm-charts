@@ -53,6 +53,8 @@ webserver:
     #   cpu: 100m
     #   memory: 128Mi
 
+  extraVolumeMounts: []
+
 gitSync:
   syncRepo: https://github.com/example/example.com
 
@@ -83,6 +85,8 @@ gitSync:
     #   cpu: 100m
     #   memory: 128Mi
 
+  extraVolumeMounts: []
+
 podSecurityContext: {}
   # fsGroup: 2000
 
@@ -98,3 +102,5 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+extraVolumes: []

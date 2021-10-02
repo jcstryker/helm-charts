@@ -36,6 +36,9 @@ spec:
           volumeMounts:
             - name: shared
               mountPath: /http
+            {{- if .Values.webserver.extraVolumeMounts -}}
+            {{ .Values.webserver.extraVolumeMounts | toYaml | nindent 12 }}
+            {{- end }}
           args:
           {{- if .Values.webserver.args }}
             {{- toYaml .Values.webserver.args | nindent 12 }}
@@ -57,6 +60,9 @@ spec:
           volumeMounts:
             - name: shared
               mountPath: /tmp/git
+            {{- if .Values.gitSync.extraVolumeMounts -}}
+            {{ .Values.gitSync.extraVolumeMounts | toYaml | nindent 12 }}
+            {{- end }}
           env:
             - name: GIT_SYNC_REPO
               value: {{ .Values.gitSync.syncRepo }}
@@ -68,6 +74,9 @@ spec:
       volumes:
         - name: shared
           emptyDir: {}
+        {{- if .Values.extraVolumes -}}
+        {{ .Values.extraVolumes | toYaml | nindent 8 }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
