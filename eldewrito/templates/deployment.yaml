@@ -6,6 +6,7 @@ metadata:
     {{- include "eldewrito.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  strategy: Recreate
   selector:
     matchLabels:
       {{- include "eldewrito.selectorLabels" . | nindent 6 }}
@@ -21,7 +22,6 @@ spec:
       serviceAccountName: {{ include "eldewrito.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      strategy: Recreate
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
