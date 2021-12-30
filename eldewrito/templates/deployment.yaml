@@ -45,12 +45,16 @@ spec:
               mountPath: /logs
           ports:
             - containerPort: 11774
+              protocol: UDP
               hostPort: 11774
             - containerPort: 11775
               hostPort: 11775
+              protocol: TCP
             - containerPort: 11776
+              protocol: TCP
               hostPort: 11776
             - containerPort: 11777
+              protocol: TCP
               hostPort: 11777
       volumes:
         - name: game
