@@ -11,17 +11,21 @@ spec:
       protocol: UDP
       port: 11774
       targetPort: 11774
+      hostPort: 11774
     - name: http
       protocol: TCP
       port: 11775
       targetPort: 11775
+      hostPort: 11775
     - name: rcon
       protocol: TCP
       port: 11776
       targetPort: 11776
+      hostPort: 11776
     - name: voip
       protocol: TCP
       port: 11777
       targetPort: 11777
+      hostPort: 11777
   selector:
     {{- include "eldewrito.selectorLabels" . | nindent 4 }}
