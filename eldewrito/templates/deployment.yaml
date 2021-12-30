@@ -30,6 +30,10 @@ spec:
           env:
           - name: RUN_AS_USER
             value: "true"
+          - name: PUID
+            value: 1000
+          - name: PGID
+            value: 1000
           livenessProbe:
             httpGet:
               path: /
