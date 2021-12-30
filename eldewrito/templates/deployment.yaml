@@ -28,8 +28,8 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            - name: RUN_AS_USER
-              value: true
+          - name: RUN_AS_USER
+            value: "true"
           livenessProbe:
             httpGet:
               path: /
