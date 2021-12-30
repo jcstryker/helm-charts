@@ -28,12 +28,12 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-          - name: RUN_AS_USER
-            value: "true"
-          - name: PUID
-            value: "1000"
-          - name: PGID
-            value: "1000"
+            - name: RUN_AS_USER
+              value: "true"
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
@@ -43,6 +43,15 @@ spec:
               mountPath: /config
             - name: logs
               mountPath: /logs
+          ports:
+            - containerPort: 11774
+              hostPort: 11774
+            - containerPort: 11775
+              hostPort: 11775
+            - containerPort: 11776
+              hostPort: 11776
+            - containerPort: 11777
+              hostPort: 11777
       volumes:
         - name: game
           hostPath:
