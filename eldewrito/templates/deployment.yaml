@@ -33,15 +33,7 @@ spec:
           - name: PUID
             value: "1000"
           - name: PGID
-            value: "1000"            
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 11775
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 11775
+            value: "1000"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
