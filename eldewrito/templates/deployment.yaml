@@ -33,9 +33,7 @@ spec:
           - name: PUID
             value: "1000"
           - name: PGID
-            value: "1000"
-          - name: SKIP_CHOWN
-            value: "true"            
+            value: "1000"            
           livenessProbe:
             httpGet:
               path: /
