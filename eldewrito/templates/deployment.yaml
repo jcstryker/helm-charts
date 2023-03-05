@@ -41,8 +41,14 @@ spec:
           volumeMounts:
             - name: game
               mountPath: /game
+              readOnly: true
+            - name: dewrito-prefs
+              mountPath: /game
+              subPath: dewrito_prefs.cfg
+              readOnly: true
             - name: config
               mountPath: /config
+              readOnly: true
             - name: logs
               mountPath: /logs
           ports:
@@ -62,12 +68,22 @@ spec:
         - name: game
           hostPath:
             path: /srv/eldewrito/game
-        - name: config
-          hostPath:
-            path: /srv/eldewrito/config
+        - name: dewrito-prefs
+          configMap:
+            name: {{ template "eldewrito.fullname" . }}-dewrito-prefs
+            items:
+              - key: dewrito_prefs.cfg
+                path: dewrito_prefs.cfg
         - name: logs
           hostPath:
             path: /srv/eldewrito/logs
+        - name: config
+          projected:
+            sources:
+              - configMap:
+                  name: {{ template "eldewrito.fullname" . }}-veto
+              - configMap:
+                  name: {{ template "eldewrito.fullname" . }}-voting
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

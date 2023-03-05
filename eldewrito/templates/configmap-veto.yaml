@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "eldewrito.fullname" . }}-veto
+  labels:
+    {{- include "eldewrito.labels" . | nindent 4 }}
+data:
+  veto.json: |
+    {
+        "playlist": [
+            {
+            "map": {
+                "displayName": "Standoff",
+                "mapName": "Standoff H3"
+            },
+            "gametype": {
+                "displayName": "Team King",
+                "typeName": "Team Crazy King",
+                "commands": ["Server.SprintEnabled 0", "Server.AssassinationEnabled 0", "Server.NumberOfTeams 2"]
+            }
+            },
+            {
+            "map": {
+                "displayName": "Narrows",
+                "mapName": "Narrows H3"
+            },
+            "gametype": {
+                "displayName": "Team BRs",
+                "typeName": "Team BRs",
+                "commands": ["Server.SprintEnabled 0", "Server.AssassinationEnabled 0", "Server.NumberOfTeams 2"]
+            }
+            }
+        ]
+    }
