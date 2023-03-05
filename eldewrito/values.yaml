@@ -21,8 +21,6 @@ podSecurityContext:
 securityContext:
   allowPrivilegeEscalation: false
   capabilities:
-    drop:
-      - ALL
     add:
       - SYS_PTRACE
 

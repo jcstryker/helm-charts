@@ -65,6 +65,7 @@ spec:
       volumes:
         - name: config
           projected:
+            defaultMode: 420
             sources:
               - configMap:
                   name: {{ template "eldewrito.fullname" . }}-veto
@@ -72,6 +73,7 @@ spec:
                   name: {{ template "eldewrito.fullname" . }}-voting
         - name: dewrito-prefs
           configMap:
+            defaultMode: 420
             name: {{ template "eldewrito.fullname" . }}-dewrito-prefs
             items:
               - key: dewrito_prefs.cfg
