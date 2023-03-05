@@ -42,10 +42,10 @@ spec:
             - name: game
               mountPath: /game
               readOnly: true
-            - name: dewrito-prefs
-              mountPath: /game
-              subPath: dewrito_prefs.cfg
-              readOnly: true
+            # - name: dewrito-prefs
+            #   mountPath: /game
+            #   subPath: dewrito_prefs.cfg
+            #   readOnly: true
             - name: config
               mountPath: /config
               readOnly: true
