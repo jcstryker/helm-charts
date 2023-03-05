@@ -41,8 +41,7 @@ spec:
           volumeMounts:
             - name: game
               mountPath: /game
-              readOnly: true
-            - name: dewrito_prefs
+            - name: dewrito-prefs
               mountPath: /tmp/dewrito_prefs.cfg
               readOnly: true
             - name: config
@@ -67,7 +66,7 @@ spec:
         - name: game
           hostPath:
             path: /srv/eldewrito/game
-        - name: dewrito_prefs
+        - name: dewrito-prefs
           configMap:
             name: {{ template "eldewrito.fullname" . }}-dewrito-prefs
             items:
