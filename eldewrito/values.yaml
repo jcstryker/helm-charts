@@ -12,21 +12,27 @@ serviceAccount:
   create: true
   name:
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+  fsGroupChangePolicy: "OnRootMismatch"
 
 securityContext:
+  allowPrivilegeEscalation: false
   capabilities:
+    drop:
+      - ALL
     add:
       - SYS_PTRACE
 
 resources:
   limits:
     cpu: 1
-    # memory: 4Gi
+    memory: 4Gi
   requests:
     cpu: 1
-    # memory: 4Gi
+    memory: 4Gi
 
 nodeSelector: {}
 
