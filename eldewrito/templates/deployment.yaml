@@ -39,14 +39,14 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-            - name: game
-              mountPath: /game
-            - name: dewrito-prefs
-              mountPath: /tmp/dewrito_prefs.cfg
-              readOnly: true
             - name: config
               mountPath: /config
               readOnly: true
+            - name: dewrito-prefs
+              mountPath: /tmp/dewrito_prefs.cfg
+              readOnly: true
+            - name: game
+              mountPath: /game
             - name: logs
               mountPath: /logs
           ports:
@@ -63,18 +63,6 @@ spec:
               protocol: TCP
               hostPort: 11777
       volumes:
-        - name: game
-          hostPath:
-            path: /srv/eldewrito/game
-        - name: dewrito-prefs
-          configMap:
-            name: {{ template "eldewrito.fullname" . }}-dewrito-prefs
-            items:
-              - key: dewrito_prefs.cfg
-                path: dewrito_prefs.cfg
-        - name: logs
-          hostPath:
-            path: /srv/eldewrito/logs
         - name: config
           projected:
             sources:
@@ -82,6 +70,20 @@ spec:
                   name: {{ template "eldewrito.fullname" . }}-veto
               - configMap:
                   name: {{ template "eldewrito.fullname" . }}-voting
+        - name: dewrito-prefs
+          configMap:
+            name: {{ template "eldewrito.fullname" . }}-dewrito-prefs
+            items:
+              - key: dewrito_prefs.cfg
+                path: dewrito_prefs.cfg
+        - name: game
+          hostPath:
+            path: /srv/eldewrito/game
+            type: Directory
+        - name: logs
+          hostPath:
+            path: /srv/eldewrito/logs
+            type: Directory
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
